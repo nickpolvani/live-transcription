@@ -1,0 +1,14 @@
+[project]
+name = "live-transcription"
+version = "1.0.0"
+description = "Real-time speech-to-text transcription using faster-whisper with a web UI"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"

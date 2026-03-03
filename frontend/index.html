@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Transcription</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Live Transcription</h1>
+        <div class="connection-status" id="connectionStatus">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusText">Disconnected</span>
+        </div>
+    </header>
+
+    <div class="controls">
+        <button id="recordBtn" class="btn btn-record" disabled>Start Recording</button>
+
+        <label for="languageSelect">Language:</label>
+        <select id="languageSelect">
+            <option value="auto" selected>Auto-detect</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="it">Italian</option>
+        </select>
+
+        <button id="saveBtn" class="btn btn-save">Save Transcript</button>
+    </div>
+
+    <div class="transcript-area" id="transcriptArea">
+        <p class="placeholder" id="placeholder">Transcript will appear here…</p>
+    </div>
+
+    <footer>
+        <span id="modelInfo">Loading model…</span>
+        <span id="timer"></span>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

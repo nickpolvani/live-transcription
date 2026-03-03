@@ -1,0 +1,179 @@
+/* ── Reset & base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg:       #1a1a2e;
+    --surface:  #16213e;
+    --border:   #0f3460;
+    --accent:   #e94560;
+    --text:     #eaeaea;
+    --muted:    #8a8a9a;
+    --green:    #00c853;
+    --radius:   6px;
+}
+
+html, body {
+    height: 100%;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+header h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--muted);
+    display: inline-block;
+    transition: background 0.3s;
+}
+
+.dot.connected {
+    background: var(--green);
+}
+
+/* ── Controls bar ──────────────────────────────────────────────────────── */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.controls label {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.controls select {
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.85rem;
+}
+
+.btn {
+    padding: 0.45rem 1rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-record {
+    background: var(--accent);
+    color: #fff;
+}
+
+.btn-record.recording {
+    background: #c0392b;
+}
+
+.btn-save {
+    background: var(--border);
+    color: var(--text);
+    margin-left: auto;
+}
+
+.btn:hover:not(:disabled) {
+    opacity: 0.85;
+}
+
+/* ── Transcript area ───────────────────────────────────────────────────── */
+.transcript-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.25rem;
+    line-height: 1.6;
+}
+
+.placeholder {
+    color: var(--muted);
+    font-style: italic;
+}
+
+.segment {
+    margin-bottom: 0.5rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.segment .lang-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    background: var(--border);
+    color: var(--muted);
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    text-transform: uppercase;
+}
+
+.segment.partial {
+    color: var(--muted);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    header h1 { font-size: 1rem; }
+    .controls { gap: 0.4rem; }
+    .btn { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+}
