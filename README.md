@@ -29,25 +29,29 @@ The default model is **medium** — best accuracy/speed tradeoff for multilingua
 - A working microphone
 - (Optional) NVIDIA GPU with CUDA for hardware acceleration
 
-## Installation
+## Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USER/live-transcription.git
+git clone https://github.com/nickpolvani/live-transcription.git
 cd live-transcription
+make setup   # creates venv, installs deps + Playwright
+make run     # starts server and opens browser
+```
 
-# Create a virtual environment
+### Manual installation (without Make)
+
+```bash
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # Linux / macOS
-
-# Install dependencies
 pip install -r requirements.txt
+python run.py
 ```
 
 ### For development / testing
 
 ```bash
+# Already included in `make setup`, or manually:
 pip install -r requirements-dev.txt
 playwright install chromium
 ```
@@ -55,7 +59,8 @@ playwright install chromium
 ## Usage
 
 ```bash
-python run.py
+make run
+# or: python run.py
 ```
 
 The browser will open automatically at **http://localhost:8080**.
@@ -82,7 +87,8 @@ Edit `backend/config.py` to change defaults:
 ## Running Tests
 
 ```bash
-pytest tests/e2e/ -v
+make test
+# or: WHISPER_MODEL=tiny python -m pytest tests/e2e/test_app.py -v
 ```
 
 ## Project Structure
@@ -107,6 +113,7 @@ live-transcription/
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── pyproject.toml
+├── Makefile
 ├── run.py
 └── README.md
 ```

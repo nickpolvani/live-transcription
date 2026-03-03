@@ -29,19 +29,40 @@ Linux/macOS users: swap the activate command as noted below.
 ## 2. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USER/live-transcription.git
+git clone https://github.com/nickpolvani/live-transcription.git
 cd live-transcription
 ```
 
 ---
 
-## 3. Create a virtual environment
+## 3. One-command setup (with Make)
+
+```bash
+make setup
+```
+
+This single command:
+- Creates a `venv` virtual environment
+- Installs all runtime **and** dev dependencies
+- Downloads the Playwright Chromium browser for testing
+
+Then run:
+
+```bash
+make run
+```
+
+> Skip to **Step 6** if you used `make setup` + `make run`.
+
+---
+
+## 4. Manual setup (without Make)
+
+Create and activate a virtual environment:
 
 ```bash
 python -m venv venv
 ```
-
-Activate it:
 
 ```powershell
 # Windows (PowerShell)
@@ -56,9 +77,7 @@ source venv/bin/activate
 
 You should see `(venv)` in your terminal prompt.
 
----
-
-## 4. Install dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -85,7 +104,8 @@ The app auto-detects GPU vs CPU at startup — no code changes needed.
 ## 5. Run the app
 
 ```bash
-python run.py
+make run
+# or: python run.py
 ```
 
 What happens:
@@ -134,14 +154,20 @@ Valid values: `tiny`, `base`, `small`, `medium`, `large-v3`.
 
 ## 7. Running the E2E tests
 
-Install dev dependencies:
+If you used `make setup`, dev dependencies are already installed. Otherwise:
 
 ```bash
 pip install -r requirements-dev.txt
 playwright install chromium
 ```
 
-Run the test suite (uses the `tiny` model automatically):
+Run the test suite:
+
+```bash
+make test
+```
+
+Or manually (uses the `tiny` model to avoid large downloads):
 
 ```powershell
 # PowerShell
