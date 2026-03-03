@@ -4,10 +4,46 @@ from __future__ import annotations
 
 import logging
 import os
+import site
+import sys
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional
 
 logger = logging.getLogger(__name__)
+
+
+def _add_nvidia_dll_paths() -> None:
+    """Add pip-installed NVIDIA library paths to the DLL search path on Windows.
+
+    The ``nvidia-cudnn-cu12`` and ``nvidia-cublas-cu12`` pip packages install
+    DLLs under ``site-packages/nvidia/<lib>/bin/`` which are not on PATH by
+    default.  We add them so CTranslate2 can find cuDNN and cuBLAS at runtime.
+    """
+    if sys.platform != "win32":
+        return
+
+    # Collect candidate site-packages dirs (venv + user)
+    sp_dirs = site.getsitepackages()
+    if site.getusersitepackages():
+        sp_dirs.append(site.getusersitepackages())
+
+    nvidia_libs = ["cudnn", "cublas", "cuda_runtime", "cufft", "curand"]
+    for sp in sp_dirs:
+        for lib in nvidia_libs:
+            bin_dir = Path(sp) / "nvidia" / lib / "bin"
+            if bin_dir.is_dir():
+                dll_path = str(bin_dir)
+                if dll_path not in os.environ.get("PATH", ""):
+                    os.environ["PATH"] = dll_path + os.pathsep + os.environ.get("PATH", "")
+                    try:
+                        os.add_dll_directory(dll_path)
+                    except (OSError, AttributeError):
+                        pass  # add_dll_directory requires Python 3.8+, may fail on network paths
+                    logger.debug("Added NVIDIA DLL path: %s", dll_path)
+
+
+_add_nvidia_dll_paths()
 
 AVAILABLE_MODELS = ["tiny", "base", "small", "medium", "large-v3"]
 SUPPORTED_LANGUAGES = {
@@ -28,8 +64,11 @@ def _detect_device() -> str:
     try:
         import ctranslate2
 
-        if "cuda" in ctranslate2.get_supported_compute_types("cuda"):
-            logger.info("CUDA device detected via ctranslate2")
+        # get_supported_compute_types("cuda") returns a set of compute types
+        # (e.g. {"float16", "int8", ...}) if CUDA is available, or raises if not.
+        cuda_types = ctranslate2.get_supported_compute_types("cuda")
+        if cuda_types:  # non-empty set means CUDA works
+            logger.info("CUDA device detected via ctranslate2 (types: %s)", cuda_types)
             return "cuda"
     except Exception:
         pass
