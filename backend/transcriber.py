@@ -82,7 +82,7 @@ class Transcriber:
 
         segments_iter, info = self._model.transcribe(
             audio,
-            beam_size=5,
+            beam_size=self._cfg.beam_size,
             language=lang,
             vad_filter=True,
             vad_parameters={"threshold": self._cfg.vad_threshold},

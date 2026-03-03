@@ -20,7 +20,7 @@ SUPPORTED_LANGUAGES = {
 
 def _default_model_size() -> str:
     """Allow override via WHISPER_MODEL env var (useful for testing)."""
-    return os.environ.get("WHISPER_MODEL", "medium")
+    return os.environ.get("WHISPER_MODEL", "base")
 
 
 def _detect_device() -> str:
@@ -68,6 +68,9 @@ class AppConfig:
     channels: int = 1  # mono
     dtype: str = "float32"
     chunk_duration: float = 2.0  # seconds per chunk
+
+    # Decoding settings
+    beam_size: int = 1  # beam_size=1 (greedy) is ~2x faster than 5; quality tradeoff is small
 
     # VAD settings
     vad_threshold: float = 0.5  # Silero VAD speech probability threshold
